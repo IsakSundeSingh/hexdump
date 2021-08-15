@@ -1,3 +1,4 @@
+use colored::Colorize;
 use std::io::prelude::*;
 
 const BYTES_PER_LINE: usize = 16;
@@ -15,6 +16,17 @@ fn main() -> std::io::Result<()> {
       match *byte {
         0x00 => print!(".  "),
         0xff => print!("## "),
+        _ => print!("{:02x}", byte),
+      }
+    }
+    print!("|");
+    for byte in &buffer {
+      match *byte {
+        x if x.is_ascii_alphabetic() => print!("{}", String::from_utf8_lossy(&[x]).cyan()),
+        x if x.is_ascii_digit() => print!("{}", String::from_utf8_lossy(&[x]).blue()),
+        x if x.is_ascii_graphic() => print!("{}", String::from_utf8_lossy(&[x]).yellow()),
+        x if x.is_ascii_punctuation() => print!("{}", String::from_utf8_lossy(&[x]).green()),
+        x if x.is_ascii_whitespace() => print!("{}", ".".bright_black()),
         _ => print!("{:02x}", byte),
       }
     }
