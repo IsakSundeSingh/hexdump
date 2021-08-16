@@ -11,7 +11,7 @@ fn main() -> std::io::Result<()> {
 
   let mut pos = 0;
   while file.read_exact(&mut buffer).is_ok() {
-    print!("[0x{:08x}] ", pos);
+    print!("{}", format!("[0x{:08x}] ", pos).bright_black());
     for byte in &buffer {
       match *byte {
         0x00 => print!(".  "),
@@ -19,7 +19,7 @@ fn main() -> std::io::Result<()> {
         _ => print!("{:02x}", byte),
       }
     }
-    print!("|");
+    print!("{}", "|".bright_black());
     for byte in &buffer {
       match *byte {
         x if x.is_ascii_alphabetic() => print!("{}", String::from_utf8_lossy(&[x]).cyan()),
